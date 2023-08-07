@@ -1,0 +1,59 @@
+{% extends 'hod_templates/base_template.html' %} 
+{% load static %} 
+{% block page_title %} Add Subject {% endblock page_title %} 
+{% block main_content %}
+<section class="content">
+  <div class="container-fluid">
+    <form action="/add_subject_save" method="POST" role="form">
+      {% csrf_token %}
+      <div class="card-body">
+        <div class="form-group">
+          <label>Subject Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="subject_name"
+            placeholder="Enter Subject Name"
+          />
+        </div>
+        <div class="form-group">
+          <label>Course Name</label>
+          <select class="form-control" name="course_id">
+          {% for course in courses %}
+            <option value = "{{ course.id }}" >{{ course.course_name }}</option>
+          {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Subject Teacher Name</label>
+          <select class="form-control" name = "staff_id">
+          {% for staff in staffs %}
+            <option value = "{{ staff.id }}" >{{ staff.first_name }} {{ staff.last_name }}</option>
+          {% endfor %}
+          </select>
+        </div>
+        <div>
+          {% if messages %}
+          <div class="col-12">
+            {% for message in messages %} {% if message.tags == 'error' %}
+            <div class="alert alert-danger" style="margin-top: 10px">
+              {{message}}
+            </div>
+            {% endif %} {% if message.tags == 'success' %}
+            <div class="alert alert-success" style="margin-top: 10px">
+              {{message}}
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div class="mt-5 form-group">
+          <button type="submit" class="btn btn-primary btn-block">
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock main_content %}
